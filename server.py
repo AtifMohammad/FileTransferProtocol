@@ -5,7 +5,7 @@ import sys
 import os
 import hashlib
 
-HOST = '0.0.0.0'
+HOST = 'localhost'
 PORT = 5000
 
 try:
@@ -24,6 +24,7 @@ print 'Socket bind complete'
 
 s.listen(1)
 print 'Server now listning'
+
 
 
 while (1):
@@ -107,17 +108,22 @@ while (1):
         if(len(string) > 1):
 	        reqFile = string[1]
 
-	        if (string[0] == 'put'):
-	            with open(reqFile, 'wb') as file_to_write:
-	                while True:
-	                    data = conn.recv(1024)
-	                    if not data:
-	                        break
-	                    file_to_write.write(data)
-	                    file_to_write.close()
-	                    break
-	            print 'Receive Successful'
-	        elif (string[0] == 'get'):
+	        if (string[0] == 'FileUpload'):
+	            file_to_write = open(reqFile,'wb')
+                    si = string[2:]
+                    for p in si:
+                        p = p + " "
+                        print "Command ka bacha hua" + p
+                        file_to_write.write(p)
+                    while True:
+                        data = conn.recv(1024)
+        	        print "kuch BHi data" +data
+                        if not data:
+                            break
+                        file_to_write.write(data)
+                    file_to_write.close()
+        	    print 'Receive Successful'
+	        elif (string[0] == 'FileDownload'):
 	            with open(reqFile, 'rb') as file_to_send:
 	                for data in file_to_send:
 	                    conn.sendall(data)

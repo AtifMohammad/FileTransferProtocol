@@ -6,18 +6,20 @@ import sys
 import os
 import hashlib
 
-HOST = '10.1.39.78'   #server name goes in here
+HOST = 'localhost'   #server name goes in here
 PORT = 5000
+
 
 def put(commandName):
     socket1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socket1.connect((HOST, PORT))
     socket1.send(commandName)
-    string = commandName.split(' ', 1)
+    string = commandName.split(' ')
     inputFile = string[1]
     with open(inputFile, 'rb') as file_to_send:
         for data in file_to_send:
-            socket1.sendall(data)
+            print "Client se jaata hua " + data
+            socket1.send(data)
     print 'Upload Successful'
     socket1.close()
     return
